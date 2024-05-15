@@ -1,9 +1,16 @@
-# Disable Windows11 Titlebars
+# TitlelessWindows - Disable Windows11 title bars
 This PowerShell script overrides the title bar style of all currently open windows to remove them.  
+That means you'll have to run the script each time a new window was opend to remove its title bar.
 Please note that this script only works with standard Windows 11 title bars.  
-Title bars from most browsers or Visual Studio / Visual Studio Code will not be affected.
-![image](https://github.com/akkiirah/disable-windows11-titlebars/assets/46369555/3214e368-da4a-41b1-9cf7-5f3bcc65e743)
-![image](https://github.com/akkiirah/disable-windows11-titlebars/assets/46369555/83e11895-87a5-4817-8171-ff90300dd9d9)
+Title bars from most browsers or Visual Studio / Visual Studio Code will not be affected.  
+
+Before:  
+![Title bar visible](https://github.com/akkiirah/TitlelessWindows/assets/46369555/fa65c77d-c83c-4a43-9338-9f7e20102ca9)
+
+After:  
+![Title bar invisible](https://github.com/akkiirah/TitlelessWindows/assets/46369555/d06cff2d-a121-43a1-a098-0354416e1fbb)
+
+
 
 I want to address that I'm not an expert programmer, nor do I have much experience in scripting with PowerShell.  
 If you want to improve my code, feel free to do so!  
@@ -20,12 +27,12 @@ Since I've been wanting to disable the title bar for a while now, I hacked toget
 
 ### Installation
 - Download the ZIP file and unpack its contents to a location of your choice, preferably somewhere with a short path.
-- Open the `DeleteTitlebar.bat` file with the text editor of your choice and change `C:\Users\akkiirah\.glaze-wm\scripts\DeleteTitlebar.ps1` to the path where you unpacked the files.
+- Open the `Deletetitle bar.bat` file with the text editor of your choice and change `C:\Users\akkiirah\.glaze-wm\scripts\Deletetitle bar.ps1` to the path where you unpacked the files.
 
 -----
 
 ### How to use:
-- You can now simply run the `DeleteTitlebar.bat` file, which will remove all standard Windows 11 title bars.  
+- You can now simply run the `Deletetitle bar.bat` file, which will remove all standard Windows 11 title bars.  
 If you wish to have a shortcut to this batch file in your Start menu, create a shortcut and place it inside a folder that you can access through the Start menu.  
 This way, you can pin a batch file to the Start menu.
 
@@ -33,7 +40,7 @@ This way, you can pin a batch file to the Start menu.
 Since I'm using GlazeWM, this is how I call this script.
 
 ```yaml
-  - command: 'exec C:\Users\akkiirah\.glaze-wm\scripts\DeleteTitlebar.bat'
+  - command: 'exec C:\Users\akkiirah\.glaze-wm\scripts\Deletetitle bar.bat'
     binding: 'Alt+Ctrl+Space'
 ```
 -----
@@ -56,6 +63,6 @@ However you can also adjust the match_process_name to the windows that are makin
 
 ### TODO:
 - Find a way to supress opening a powershell window when running the script.
-- Let the script run in the background and update the titlebar of newly opend windows automatically.
-- Find a way to completly hide the titlebar. No single pixel shall live.
+- Let the script run in the background and update the title bar of newly opend windows automatically.
+- Find a way to completly hide the title bar. No single pixel shall live.
 -----
