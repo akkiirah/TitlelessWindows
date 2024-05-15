@@ -27,12 +27,12 @@ Since I've been wanting to disable the title bar for a while now, I hacked toget
 
 ### Installation
 - Download the ZIP file and unpack its contents to a location of your choice, preferably somewhere with a short path.
-- Open the `Deletetitle bar.bat` file with the text editor of your choice and change `C:\Users\akkiirah\.glaze-wm\scripts\Deletetitle bar.ps1` to the path where you unpacked the files.
+- Open the `DeleteTitlebar.bat` file with the text editor of your choice and change `C:\Users\akkiirah\.glaze-wm\scripts\Deletetitle bar.ps1` to the path where you unpacked the files.
 
 -----
 
 ### How to use:
-- You can now simply run the `Deletetitle bar.bat` file, which will remove all standard Windows 11 title bars.  
+- You can now simply run the `DeleteTitlebar.bat` file, which will remove all standard Windows 11 title bars.  
 If you wish to have a shortcut to this batch file in your Start menu, create a shortcut and place it inside a folder that you can access through the Start menu.  
 This way, you can pin a batch file to the Start menu.
 
@@ -40,7 +40,7 @@ This way, you can pin a batch file to the Start menu.
 Since I'm using GlazeWM, this is how I call this script.
 
 ```yaml
-  - command: 'exec C:\Users\akkiirah\.glaze-wm\scripts\Deletetitle bar.bat'
+  - command: 'exec C:\Users\akkiirah\.glaze-wm\scripts\DeleteTitlebar.bat'
     binding: 'Alt+Ctrl+Space'
 ```
 -----
@@ -53,7 +53,7 @@ Edit the registry at your own risk!
 
 Also note, if you're running GlazeWM with GAPS, setting `PaddedBorderWidth` to 0 seems to make all standard windows containers not adjust acording to your set gap.  
 To fix this, I apply the window rule to resize borders left, right and bottom minus your gap size and match it to every process.  
-However you can also adjust the match_process_name to the windows that are making issues. I was to lazy for that so far.  
+However you can also adjust the `match_process_name` to the windows that are making issues. I was to lazy for that so far.  
 
 ```yaml
   - command: 'resize borders 0px [your gap]px [your gap]px [your gap]px'
