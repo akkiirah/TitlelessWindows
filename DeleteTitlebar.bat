@@ -1,0 +1,2 @@
+@echo off
+PowerShell.exe -WindowStyle Hidden -Command "Start-Process PowerShell.exe -ArgumentList '-ExecutionPolicy Bypass -File ""C:\Users\akkiirah\.glaze-wm\scripts\DeleteTitlebar.ps1""' -Verb RunAs"
