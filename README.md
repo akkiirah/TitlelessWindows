@@ -29,9 +29,17 @@ Since I've been wanting to disable the title bar for a while now, I hacked toget
 - Download the ZIP file and unpack its contents to a location of your choice, preferably somewhere with a short path.
 - Open the `DeleteTitlebar.bat` file with the text editor of your choice and change `C:\Users\akkiirah\.glaze-wm\scripts\Deletetitle bar.ps1` to the path where you unpacked the files.
 
+> This current version disables Window borders to perfectly cut the title bar.  
+> If you want to have a border in exchange for an about 2-3px thick title bar,  
+> open the ps1 file in any texteditor and change `$styleToRemove = 0x00C00000 -bor 0x00040000` to `$styleToRemove = 0x00C00000`  
+> Save the file and continue.
+
 -----
 
 ### How to use:
+- Rightclick the Bat file and create a shortcut.
+- Rightclick that shortcut, go to Properties.
+- Under the “Shortcut” tab, change the “Run” dropdown to “Minimized". This will ensure that no cmd prompt will show up.
 - You can now simply run the `DeleteTitlebar.bat` file, which will remove all standard Windows 11 title bars.  
 If you wish to have a shortcut to this batch file in your Start menu, create a shortcut and place it inside a folder that you can access through the Start menu.  
 This way, you can pin a batch file to the Start menu.
@@ -46,6 +54,8 @@ Since I'm using GlazeWM, this is how I call this script.
 -----
 
 ### One more tip:
+> This is for if you have changed `$styleToRemove` during the installation part!
+
 - For some reason, this script doesn't completely remove the title bar. There will still be around 10 pixels left.  
 It is possible to reduce this to almost 0 by changing `PaddedBorderWidth` to 0 in `Computer\HKEY_CURRENT_USER\Control Panel\Desktop\WindowMetrics` in your registry.  
 > However i must inform you that editing your registry might produce unwanted side effects or endanger your system.  
@@ -62,7 +72,8 @@ However you can also adjust the `match_process_name` to the windows that are mak
 -----
 
 ### TODO:
-- Find a way to supress opening a powershell window when running the script.
+- ~~Find a way to supress opening a powershell window when running the script.~~
 - Let the script run in the background and update the title bar of newly opend windows automatically.
-- Find a way to completly hide the title bar. No single pixel shall live.
+- ~~Find a way to completly hide the title bar. No single pixel shall live.~~
+- Find a way to restore or create a custom border.
 -----
