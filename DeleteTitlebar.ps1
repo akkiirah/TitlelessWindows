@@ -8,10 +8,6 @@ public static extern int GetWindowLong(IntPtr hWnd, int nIndex);
 [DllImport("user32.dll")]
 public static extern int SetWindowLong(IntPtr hWnd, int nIndex, int dwNewLong);
 
-[DllImport("user32.dll")]
-[return: MarshalAs(UnmanagedType.Bool)]
-public static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int X, int Y, int cx, int cy, uint uFlags);
-
 public const int GWL_STYLE = -16; 
 public const int SWP_FRAMECHANGED = 0x0020;
 "@
@@ -19,30 +15,36 @@ public const int SWP_FRAMECHANGED = 0x0020;
 # Load the necessary APIs
 Add-Type -MemberDefinition $signature -Name WinAPI -Namespace Win32Functions
 
-# Get all processes except explorer.exe
-$processes = Get-Process | Where-Object { $_.ProcessName -ne "explorer" }
+# Define the style bits to remove from the current style
+$styleToRemove = 0x00C00000 -bor 0x00040000
 
-foreach ($process in $processes) {
+# Continuously check for windows
+while ($true) {
+    
+    # Get all foreground windows instead of all processes
+    $hWnd = [Win32Functions.WinAPI]::GetForegroundWindow()
 
-    # Get the main window handle of the process
-    $hWnd = $process.MainWindowHandle
+    # Check if handle of the window has valid window handle
+    if ($hWnd -ne [System.IntPtr]::Zero) {
 
-    # Check if the process has a main window and it's visible
-    if ($hWnd -ne [System.IntPtr]::Zero -and $process.MainWindowTitle) {
-        Write-Host "Processing window: $($process.MainWindowTitle)"
-
-        # Get current window style
+        # Get the current window style
         $currentStyle = [Win32Functions.WinAPI]::GetWindowLong($hWnd, [Win32Functions.WinAPI]::GWL_STYLE)
-        Write-Host "Current style for $($process.MainWindowTitle): $currentStyle"
-
-        # Define style to cut titlebar
-        $styleToRemove = 0x00C00000 -bor 0x00040000
+        
+        # Debug
+        # Write-Host "Current style for the foreground window: $currentStyle"
+        
+        # Calculate the new style by removing the specified style bits from the current style
         $newStyle = $currentStyle -band (-bnot $styleToRemove)
-        Write-Host "New style for $($process.MainWindowTitle): $newStyle"
+        
+        # Debug
+        # Write-Host "New style for the foreground window: $newStyle"
 
-        # Set new style
+        # Set the new window style for the foreground window
         [Win32Functions.WinAPI]::SetWindowLong($hWnd, [Win32Functions.WinAPI]::GWL_STYLE, $newStyle)
-
-        Write-Host "Style set for $($process.MainWindowTitle)"
+        
+        # Debug
+        # Write-Host "Style set for the foreground window"
     }
+    
+    Start-Sleep -Milliseconds  1
 }
