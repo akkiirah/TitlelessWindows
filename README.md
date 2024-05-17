@@ -1,5 +1,6 @@
 # TitlelessWindows - Disable Windows11 title bars
-### **_Update:_** This current version allows the script to run in the background constantly. It now checks only for foreground windows instead of all processes which increases performance dramatically.
+### **_Update 1:_** This current version allows the script to run in the background constantly. It now checks only for foreground windows instead of all processes which increases performance dramatically. 
+#### **_Update 2:_** For the perfect 'TitlelessWindows' experience, delete `Start-Sleep -Milliseconds  1` from the .ps1 file. Note that this can and will increase CPU usage! 
 
 
 This PowerShell script overrides the title bar style of all currently open windows to remove them.  
