@@ -1,4 +1,7 @@
 # TitlelessWindows - Disable Windows11 title bars
+### **_Update:_** This current version allows the script to run in the background constantly. It now checks only for foreground windows instead of all processes which increases performance dramatically.
+
+
 This PowerShell script overrides the title bar style of all currently open windows to remove them.  
 That means you'll have to run the script each time a new window was opend to remove its title bar.
 Please note that this script only works with standard Windows 11 title bars.  
@@ -73,7 +76,8 @@ However you can also adjust the `match_process_name` to the windows that are mak
 
 ### TODO:
 - ~~Find a way to supress opening a powershell window when running the script.~~
-- Let the script run in the background and update the title bar of newly opend windows automatically.
+- ~~Let the script run in the background and update the title bar of newly opend windows automatically.~~
 - ~~Find a way to completly hide the title bar. No single pixel shall live.~~
 - Find a way to restore or create a custom border.
+- Rewrite Script in C++ for better performance and/or find a way to subscribe to window creation/style change events.
 -----
