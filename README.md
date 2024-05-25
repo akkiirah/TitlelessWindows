@@ -60,5 +60,6 @@ However you can also adjust the `match_process_name` to the windows that are mak
 - ~~Let the script run in the background and update the title bar of newly opend windows automatically.~~
 - ~~Find a way to completly hide the title bar. No single pixel shall live.~~
 - Find a way to restore or create a custom border.
-- Rewrite Script in C++ for better performance and/or ~~find a way to subscribe to window creation/style change events.~~
+- Rewrite Script in Rust for possible integration to GlazeWM in the future
+- ~~find a way to subscribe to window creation/style change events.~~
 -----
