@@ -21,6 +21,10 @@ public static extern bool UnhookWinEvent(IntPtr hWinEventHook);
 
 public const uint EVENT_SYSTEM_FOREGROUND = 0x0003;
 public const uint WINEVENT_OUTOFCONTEXT = 0x0000;
+
+[DllImport("user32.dll", SetLastError = true)]
+[return: MarshalAs(UnmanagedType.Bool)]
+public static extern bool GetWindowThreadProcessId(IntPtr hWnd, out uint lpdwProcessId);
 "@
 
 # Load the necessary APIs
@@ -28,6 +32,14 @@ Add-Type -MemberDefinition $signature -Name WinAPI -Namespace Win32Functions
 
 # Define the style bits to remove from the current style
 $styleToRemove = 0x00C00000 -bor 0x00040000
+
+# Get the directory of the script
+$scriptDirectory = Split-Path -Parent $MyInvocation.MyCommand.Definition
+
+# Read the list of process names from the text file
+$excludedProcessesPath = Join-Path -Path $scriptDirectory -ChildPath "ExcludedProcesses.txt"
+$excludedProcesses = Get-Content -Path $excludedProcessesPath
+Write-Host "Excluded Processes:" $excludedProcesses
 
 # Define the action to be taken when a new window is created, moved, or focus changes
 $winEventDelegate = [Win32Functions.WinAPI+WinEventDelegate]{
@@ -46,6 +58,17 @@ $winEventDelegate = [Win32Functions.WinAPI+WinEventDelegate]{
 
     # Check if handle of the window has valid window handle
     if ($hWnd -ne [System.IntPtr]::Zero) {
+        [uint32]$processId = 0
+        [Win32Functions.WinAPI]::GetWindowThreadProcessId($hWnd, [ref]$processId)
+
+        # Get the process name
+        $process = Get-Process -Id $processId -ErrorAction SilentlyContinue
+        Write-Host "Foreground process:" $process.ProcessName
+
+        if ($process -and $excludedProcesses -contains $process.ProcessName) {
+            # Skip modifying the window style if the process is in the excluded list
+            return
+        }
 
         # Get the current window style
         $currentStyle = [Win32Functions.WinAPI]::GetWindowLong($hWnd, [Win32Functions.WinAPI]::GWL_STYLE)

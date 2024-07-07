@@ -38,6 +38,7 @@ Since I've been wanting to disable the title bar for a while now, I hacked toget
 - Rightclick the Bat file and create a shortcut.
 - Rightclick that shortcut, go to Properties.
 - Under the “Shortcut” tab, change the “Run” dropdown to “Minimized". This will ensure that no cmd prompt will show up.
+- If don't want to remove the titlebar for certain windows, you can just add the process name to the `ExcludedProcesses.txt` file.
 - You can now simply run the created shortcut, which will remove all standard Windows 11 title bars.  
 
 -----
@@ -60,6 +61,5 @@ However you can also adjust the `match_process_name` to the windows that are mak
 - ~~Let the script run in the background and update the title bar of newly opend windows automatically.~~
 - ~~Find a way to completly hide the title bar. No single pixel shall live.~~
 - Find a way to restore or create a custom border.
-- Rewrite Script in Rust for possible integration to GlazeWM in the future
 - ~~find a way to subscribe to window creation/style change events.~~
 -----
