@@ -1,4 +1,4 @@
-# TitlelessWindows - Disable Windows11 title bars
+# TitlelessWindows - Remove Windows11 title bars
 
 This PowerShell script overrides the window style of **all** windows to remove the title bar, using the WinAPI to constantly monitor.  
 Please note that this script only works with standard Windows 11 title bars and might create unwanted side effects with windows that use a custom title bar.  
