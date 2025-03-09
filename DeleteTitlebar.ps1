@@ -38,7 +38,7 @@ public static class WinAPI
 "@
 
 # Load the necessary APIs
-Add-Type -MemberDefinition $signature -Name WinAPI -Namespace Win32Functions
+Add-Type -TypeDefinition $signature
 
 # Define the style bits to remove from the current style
 $styleToRemove = 0x00C00000 -bor 0x00040000
@@ -59,10 +59,10 @@ function Process-Window {
         [System.IntPtr]$hwnd
     )
     if ($hwnd -eq [System.IntPtr]::Zero) { return }
-    if (-not [Win32Functions.WinAPI]::IsWindowVisible($hwnd)) { return }
+    if (-not [WinAPI]::IsWindowVisible($hwnd)) { return }
 
     [uint32]$processId = 0
-    [Win32Functions.WinAPI]::GetWindowThreadProcessId($hwnd, [ref]$processId) | Out-Null
+    [WinAPI]::GetWindowThreadProcessId($hwnd, [ref]$processId) | Out-Null
 
     try {
         $process = Get-Process -Id $processId -ErrorAction Stop
@@ -73,21 +73,21 @@ function Process-Window {
 
     if ($excludedProcesses -contains $process.ProcessName) { return }
 
-    $currentStyle = [Win32Functions.WinAPI]::GetWindowLong($hwnd, [Win32Functions.WinAPI]::GWL_STYLE)
+    $currentStyle = [WinAPI]::GetWindowLong($hwnd, [WinAPI]::GWL_STYLE)
     $newStyle = $currentStyle -band (-bnot $styleToRemove)
-    [Win32Functions.WinAPI]::SetWindowLong($hwnd, [Win32Functions.WinAPI]::GWL_STYLE, $newStyle) | Out-Null
+    [WinAPI]::SetWindowLong($hwnd, [WinAPI]::GWL_STYLE, $newStyle) | Out-Null
 }
 
 # Enumerate all existing top-level windows to adjust their style
-$enumCallback = [Win32Functions.WinAPI+EnumWindowsProc]{
+$enumCallback = [WinAPI+EnumWindowsProc]{
     param([IntPtr]$hwnd, [IntPtr]$lParam)
     Process-Window $hwnd
     return $true
 }
-[Win32Functions.WinAPI]::EnumWindows($enumCallback, [IntPtr]::Zero) | Out-Null
+[WinAPI]::EnumWindows($enumCallback, [IntPtr]::Zero) | Out-Null
 
 # Delegate for the EVENT_OBJECT_SHOW to process newly displayed windows
-$winEventDelegate = [Win32Functions.WinAPI+WinEventDelegate]{
+$winEventDelegate = [WinAPI+WinEventDelegate]{
     param(
         [IntPtr]$hWinEventHook,
         [uint32]$eventType,
@@ -103,20 +103,20 @@ $winEventDelegate = [Win32Functions.WinAPI+WinEventDelegate]{
 }
 
 # Set the event hook for EVENT_OBJECT_SHOW; exit silently if it fails
-$hook = [Win32Functions.WinAPI]::SetWinEventHook(
-    [Win32Functions.WinAPI]::EVENT_OBJECT_SHOW,
-    [Win32Functions.WinAPI]::EVENT_OBJECT_SHOW,
+$hook = [WinAPI]::SetWinEventHook(
+    [WinAPI]::EVENT_OBJECT_SHOW,
+    [WinAPI]::EVENT_OBJECT_SHOW,
     [IntPtr]::Zero,
     $winEventDelegate,
     0,
     0,
-    [Win32Functions.WinAPI]::WINEVENT_OUTOFCONTEXT
+    [WinAPI]::WINEVENT_OUTOFCONTEXT
 )
 if ($hook -eq [IntPtr]::Zero) { exit }
 
 # Register a termination handler to unhook the event when the script exits
 Register-EngineEvent -SourceIdentifier PowerShell.Exiting -Action {
-    [Win32Functions.WinAPI]::UnhookWinEvent($hook) | Out-Null
+    [WinAPI]::UnhookWinEvent($hook) | Out-Null
 }
 
 # Keep the script running to handle events
